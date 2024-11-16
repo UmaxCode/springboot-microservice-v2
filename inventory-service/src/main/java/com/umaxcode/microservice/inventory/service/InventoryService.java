@@ -33,9 +33,9 @@ public class InventoryService {
 
     }
 
-    public boolean isInSock(InventoryRequestDTO request) {
+    public boolean isInSock(String skuCode, int quantity) {
 
-        return inventoryRepository.existsInventoryBySkuCodeAndQuantityIsGreaterThanEqual(request.skuCode(), request.quantity());
+        return inventoryRepository.existsInventoryBySkuCodeAndQuantityIsGreaterThanEqual(skuCode, quantity);
     }
 
 

@@ -24,8 +24,8 @@ public class InventoryController {
 
     @GetMapping("/status")
     @ResponseStatus(HttpStatus.OK)
-    public boolean isInSock(@RequestBody InventoryRequestDTO inventoryRequestDTO) {
-        return inventoryService.isInSock(inventoryRequestDTO);
+    public boolean isInSock(@RequestParam String skuCode, @RequestParam int quantity) {
+        return inventoryService.isInSock(skuCode, quantity);
     }
 
     @GetMapping
