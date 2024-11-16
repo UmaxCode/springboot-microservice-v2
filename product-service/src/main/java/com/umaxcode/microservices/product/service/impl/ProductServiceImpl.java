@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -34,5 +36,17 @@ public class ProductServiceImpl implements ProductService {
                 .description(savedProduct.getDescription())
                 .price(savedProduct.getPrice())
                 .build();
+    }
+
+    @Override
+    public List<ProductResponseDTO> getAllProduct() {
+        return productRepository.findAll()
+                .stream().map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .build()
+                ).toList();
     }
 }
