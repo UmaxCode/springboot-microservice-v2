@@ -1,8 +1,10 @@
 package com.umaxcode.microservices.order.service;
 
+import com.umaxcode.microservices.order.client.InventoryClient;
 import com.umaxcode.microservices.order.domain.dto.OrderRequestDTO;
 import com.umaxcode.microservices.order.domain.dto.OrderResponseDTO;
 import com.umaxcode.microservices.order.domain.entity.Order;
+import com.umaxcode.microservices.order.exception.OrderException;
 import com.umaxcode.microservices.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,14 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final InventoryClient inventoryClient;
 
     public OrderResponseDTO placeOrder(OrderRequestDTO request) {
+
+        boolean isProductInStock = inventoryClient.isInStock(request.skuCode(), request.quantity());
+        if (!isProductInStock) {
+            throw new OrderException("Product with skuCode " + request.skuCode() + " is not in stock");
+        }
 
         Order order = Order.builder()
                 .orderNumber(UUID.randomUUID().toString())
